@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIGHT SHIFT CARE</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="メインナビゲーション">
+      <div class="brand-lockup">
+        <div class="brand-mark">NS</div>
+        <div>
+          <p class="brand-name">NIGHT SHIFT CARE</p>
+          <p class="brand-sub">勤務ケア管理</p>
+        </div>
+      </div>
+      <nav class="nav-list">
+        <button class="nav-item active" data-screen="dashboard" type="button">
+          <span class="nav-icon nav-dashboard" aria-hidden="true"></span>
+          <span>ダッシュボード</span>
+        </button>
+        <button class="nav-item" data-screen="schedule" type="button">
+          <span class="nav-icon nav-schedule" aria-hidden="true"></span>
+          <span>シフト管理</span>
+        </button>
+        <button class="nav-item" data-screen="notes" type="button">
+          <span class="nav-icon nav-notes" aria-hidden="true"></span>
+          <span>勤務メモ</span>
+        </button>
+        <button class="nav-item" data-screen="wellness" type="button">
+          <span class="nav-icon nav-wellness" aria-hidden="true"></span>
+          <span>体調記録</span>
+        </button>
+        <button class="nav-item" data-screen="salary" type="button">
+          <span class="nav-icon nav-salary" aria-hidden="true"></span>
+          <span>給与見積もり</span>
+        </button>
+        <button class="nav-item" data-screen="settings" type="button">
+          <span class="nav-icon nav-settings" aria-hidden="true"></span>
+          <span>設定</span>
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <p>個人用デモアプリ</p>
+        <strong>ブラウザ内保存</strong>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">NIGHT SHIFT CARE</p>
+          <h1>賢くシフト管理。より良いケアへ。</h1>
+          <p class="topbar-copy">看護師・介護士のための、勤務管理・体調記録・メモ・給与見積もりをまとめたシフト管理アプリ。</p>
+        </div>
+        <div class="profile-chip">
+          <span class="status-dot"></span>
+          <div>
+            <strong>John Carter</strong>
+            <small>Night Shift Nurse</small>
+          </div>
+        </div>
+      </header>
+
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+      <section class="screen active" id="dashboard" aria-labelledby="dashboard-title">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">概要</p>
+            <h2 id="dashboard-title">ダッシュボード</h2>
+          </div>
+          <span class="period-pill">2026年5月</span>
+        </div>
+
+        <div class="dashboard-grid">
+          <article class="card greeting-card">
+            <p class="muted">おつかれさまです、John Carter</p>
+            <h3>今日の勤務状況を確認しましょう。</h3>
+            <p>夜勤・日勤・休み、メモ、体調記録、給与見積もりをまとめて確認できるポートフォリオ用デモです。</p>
+            <div class="quick-metrics">
+              <span><strong id="dashHours">168</strong> 合計勤務時間</span>
+              <span><strong id="dashBonus">¥72,000</strong> 夜勤手当</span>
+            </div>
+          </article>
+
+          <article class="card summary-card">
+            <div class="card-title-row">
+              <h3>シフト概要</h3>
+              <span>月間</span>
+            </div>
+            <div class="summary-list">
+              <div><span>日勤</span><strong id="summaryDay">12</strong></div>
+              <div><span>夜勤</span><strong id="summaryNight">8</strong></div>
+              <div><span>休み</span><strong id="summaryOff">11</strong></div>
+              <div><span>合計勤務時間</span><strong id="summaryHours">168</strong></div>
+            </div>
+          </article>
+
+          <article class="card calendar-card">
+            <div class="card-title-row">
+              <h3>月間シフトカレンダー</h3>
+              <span id="selectedDateLabel">選択中: 5月9日</span>
+            </div>
+            <div class="calendar-weekdays">
+              <span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+          </article>
+
+          <article class="card notes-preview">
+            <div class="card-title-row">
+              <h3>勤務メモ</h3>
+              <button class="text-button" data-screen-link="notes" type="button">すべて見る</button>
+            </div>
+            <div class="mini-list" id="dashboardNotes"></div>
+          </article>
+
+          <article class="card wellness-card">
+            <div class="card-title-row">
+              <h3>体調コンディション</h3>
+              <span id="moodLabel">良い</span>
+            </div>
+            <div class="mood-options" id="dashboardMood">
+              <button type="button">かなり疲れている</button>
+              <button type="button">疲れている</button>
+              <button type="button">普通</button>
+              <button class="active" type="button">良い</button>
+              <button type="button">とても良い</button>
+            </div>
+            <div class="meter-list">
+              <label>元気度 <span>74%</span><i><b style="width:74%"></b></i></label>
+              <label>睡眠の質 <span>68%</span><i><b style="width:68%"></b></i></label>
+              <label>ストレス度 <span>38%</span><i><b style="width:38%"></b></i></label>
+            </div>
+          </article>
+
+          <article class="card salary-preview">
+            <div class="card-title-row">
+              <h3>給与見積もり</h3>
+              <span>見込み</span>
+            </div>
+            <p class="salary-number" id="dashboardSalary">¥428,000</p>
+            <div class="salary-meta">
+              <span>推定給与</span>
+              <strong>夜勤手当 ¥72,000</strong>
+            </div>
+            <div class="bar-chart" aria-label="簡易給与チャート">
+              <i style="height:46%"></i><i style="height:62%"></i><i style="height:55%"></i><i style="height:80%"></i><i style="height:68%"></i><i style="height:92%"></i>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="screen" id="schedule" aria-labelledby="schedule-title">
+        <div class="section-head"><div><p class="section-kicker">シフト予定</p><h2 id="schedule-title">シフト管理</h2></div></div>
+        <div class="two-column">
+          <form class="card form-card" id="shiftForm">
+            <h3>シフトを追加</h3>
+            <div class="form-grid">
+              <label>日付<input required id="shiftDate" type="date"></label>
+              <label>勤務タイプ<select id="shiftType"><option value="Day">日勤</option><option value="Night">夜勤</option><option value="Off">休み</option></select></label>
+              <label>開始時間<input id="shiftStart" type="time" value="09:00"></label>
+              <label>終了時間<input id="shiftEnd" type="time" value="18:00"></label>
+              <label class="wide">メモ<textarea id="shiftMemo" rows="4" placeholder="申し送り、担当フロア、人員メモなど"></textarea></label>
+            </div>
+            <button class="primary-button" type="submit">シフトを追加</button>
+          </form>
+          <div class="card list-card">
+            <div class="card-title-row"><h3>登録済みシフト</h3><span id="shiftCount">0件</span></div>
+            <div class="item-list" id="shiftList"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="notes" aria-labelledby="notes-title">
+        <div class="section-head"><div><p class="section-kicker">申し送り</p><h2 id="notes-title">勤務メモ</h2></div></div>
+        <div class="two-column">
+          <form class="card form-card" id="noteForm">
+            <h3>メモを追加</h3>
+            <div class="form-grid">
+              <label>タイトル<input required id="noteTitle" type="text" placeholder="病棟申し送り"></label>
+              <label>日付<input required id="noteDate" type="date"></label>
+              <label class="wide">メモ<textarea required id="noteBody" rows="6" placeholder="勤務中の気づきや申し送りを簡潔に記録"></textarea></label>
+            </div>
+            <button class="primary-button" type="submit">メモを追加</button>
+          </form>
+          <div class="card list-card">
+            <div class="card-title-row"><h3>保存済みメモ</h3><span id="noteCount">0件</span></div>
+            <div class="item-list" id="noteList"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="wellness" aria-labelledby="wellness-title">
+        <div class="section-head"><div><p class="section-kicker">コンディション記録</p><h2 id="wellness-title">体調記録</h2></div></div>
+        <div class="two-column">
+          <form class="card form-card" id="wellnessForm">
+            <h3>体調を保存</h3>
+            <div class="form-grid">
+              <label>気分<select id="wellMood"><option>かなり疲れている</option><option>疲れている</option><option selected>普通</option><option>良い</option><option>とても良い</option></select></label>
+              <label>元気度<input id="energyLevel" type="range" min="0" max="100" value="62"></label>
+              <label>睡眠時間<input id="sleepHours" type="range" min="0" max="12" value="6"></label>
+              <label>ストレス度<input id="stressLevel" type="range" min="0" max="100" value="42"></label>
+              <label class="wide">体調メモ<textarea id="conditionNote" rows="5" placeholder="診断ではなく、自分用の体調メモとして記録"></textarea></label>
+            </div>
+            <div class="range-values" id="rangeValues">元気度 62% / 睡眠 6時間 / ストレス 42%</div>
+            <button class="primary-button" type="submit">体調を保存</button>
+          </form>
+          <div class="card list-card">
+            <div class="card-title-row"><h3>体調記録履歴</h3><span id="wellnessCount">0件</span></div>
+            <div class="item-list" id="wellnessList"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="salary" aria-labelledby="salary-title">
+        <div class="section-head"><div><p class="section-kicker">給与計算</p><h2 id="salary-title">給与見積もり</h2></div></div>
+        <div class="salary-layout">
+          <form class="card form-card" id="salaryForm">
+            <h3>給与を計算</h3>
+            <div class="form-grid">
+              <label>日勤回数<input id="dayCount" type="number" min="0" value="12"></label>
+              <label>夜勤回数<input id="nightCount" type="number" min="0" value="8"></label>
+              <label>日勤単価<input id="dayRate" type="number" min="0" value="18000"></label>
+              <label>夜勤単価<input id="nightRate" type="number" min="0" value="22000"></label>
+              <label>夜勤手当<input id="nightBonus" type="number" min="0" value="9000"></label>
+            </div>
+            <button class="primary-button" type="submit">計算する</button>
+          </form>
+          <article class="card earnings-card">
+            <p>月間推定給与</p>
+            <strong id="earningsResult">¥448,000</strong>
+            <span>入力した勤務回数と単価をもとにしたデモ用の見積もりです。</span>
+            <div class="line-chart"><i></i></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="screen" id="settings" aria-labelledby="settings-title">
+        <div class="section-head"><div><p class="section-kicker">ワークスペース</p><h2 id="settings-title">設定</h2></div></div>
+        <div class="settings-grid">
+          <article class="card profile-card">
+            <div class="avatar">J</div>
+            <h3>プロフィール</h3>
+            <p>John Carter / Night Shift Nurse</p>
+            <span>ポートフォリオ用デモユーザー</span>
+          </article>
+          <article class="card preference-card">
+            <h3>アプリ設定</h3>
+            <div class="settings-row"><span>テーマ</span><strong>ダークモード</strong></div>
+            <div class="settings-row"><span>データ保存</span><strong>ブラウザ内保存</strong></div>
+            <div class="settings-row"><span>セキュリティ</span><strong>個人用デモアプリ</strong></div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
