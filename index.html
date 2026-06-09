@@ -51,7 +51,14 @@
     <main class="main-area">
       <header class="topbar">
         <div>
-          <p class="eyebrow">NIGHT SHIFT CARE</p>
+          <div class="topbar-meta">
+            <p class="eyebrow">NIGHT SHIFT CARE</p>
+            <div class="demo-badges" aria-label="アプリ情報">
+              <span>デモアプリ</span>
+              <span>ブラウザ内保存</span>
+              <span>ポートフォリオ作品</span>
+            </div>
+          </div>
           <h1>賢くシフト管理。より良いケアへ。</h1>
           <p class="topbar-copy">看護師・介護士のための、勤務管理・体調記録・メモ・給与見積もりをまとめたシフト管理アプリ。</p>
         </div>
@@ -72,7 +79,7 @@
             <p class="section-kicker">概要</p>
             <h2 id="dashboard-title">ダッシュボード</h2>
           </div>
-          <span class="period-pill">2026年5月</span>
+          <span class="period-pill" id="dashboardPeriod">2026年5月</span>
         </div>
 
         <div class="dashboard-grid">
@@ -86,6 +93,32 @@
             </div>
           </article>
 
+          <article class="card shift-status-card today-shift-card">
+            <div class="card-title-row">
+              <h3>今日のシフト</h3>
+              <span>勤務予定</span>
+            </div>
+            <strong id="todayShiftType">Night Shift</strong>
+            <p id="todayShiftTime">19:00 - 07:00</p>
+            <div class="shift-detail-list">
+              <span id="todayBreak">休憩 120分</span>
+              <span id="todayNextGap">次の勤務まで 8時間</span>
+            </div>
+          </article>
+
+          <article class="card shift-status-card next-shift-card">
+            <div class="card-title-row">
+              <h3>次の勤務</h3>
+              <span>Upcoming</span>
+            </div>
+            <strong id="nextShiftDate">5月10日</strong>
+            <p id="nextShiftType">日勤</p>
+            <div class="shift-detail-list">
+              <span id="nextShiftTime">08:30 - 17:30</span>
+              <span>申し送り確認</span>
+            </div>
+          </article>
+
           <article class="card summary-card">
             <div class="card-title-row">
               <h3>シフト概要</h3>
@@ -95,6 +128,8 @@
               <div><span>日勤</span><strong id="summaryDay">12</strong></div>
               <div><span>夜勤</span><strong id="summaryNight">8</strong></div>
               <div><span>休み</span><strong id="summaryOff">11</strong></div>
+              <div><span>早番</span><strong id="summaryEarly">0</strong></div>
+              <div><span>遅番</span><strong id="summaryLate">0</strong></div>
               <div><span>合計勤務時間</span><strong id="summaryHours">168</strong></div>
             </div>
           </article>
@@ -102,12 +137,26 @@
           <article class="card calendar-card">
             <div class="card-title-row">
               <h3>月間シフトカレンダー</h3>
-              <span id="selectedDateLabel">選択中: 5月9日</span>
+              <span class="selected-date-pill" id="selectedDateLabel">選択中：5月9日</span>
+            </div>
+            <div class="calendar-toolbar">
+              <button class="icon-button" id="prevMonth" type="button" aria-label="前月へ">‹</button>
+              <label>年<select id="calendarYear"></select></label>
+              <label>月<select id="calendarMonth"></select></label>
+              <button class="icon-button" id="nextMonth" type="button" aria-label="翌月へ">›</button>
             </div>
             <div class="calendar-weekdays">
               <span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span>
             </div>
             <div class="calendar-grid" id="calendarGrid"></div>
+            <div class="calendar-editor">
+              <div>
+                <strong id="calendarEditorDate">2026年5月9日</strong>
+                <span>選択した日付に勤務タイプを登録できます。</span>
+              </div>
+              <select id="calendarShiftType"></select>
+              <button class="secondary-button" id="saveCalendarShift" type="button">カレンダーに登録</button>
+            </div>
           </article>
 
           <article class="card notes-preview">
@@ -142,7 +191,7 @@
               <h3>給与見積もり</h3>
               <span>見込み</span>
             </div>
-            <p class="salary-number" id="dashboardSalary">¥428,000</p>
+            <p class="salary-number" id="dashboardSalary">¥361,000</p>
             <div class="salary-meta">
               <span>推定給与</span>
               <strong>夜勤手当 ¥72,000</strong>
@@ -160,12 +209,15 @@
           <form class="card form-card" id="shiftForm">
             <h3>シフトを追加</h3>
             <div class="form-grid">
-              <label>日付<input required id="shiftDate" type="date"></label>
-              <label>勤務タイプ<select id="shiftType"><option value="Day">日勤</option><option value="Night">夜勤</option><option value="Off">休み</option></select></label>
-              <label>開始時間<input id="shiftStart" type="time" value="09:00"></label>
-              <label>終了時間<input id="shiftEnd" type="time" value="18:00"></label>
+              <label>日付<input required id="shiftDate" type="date" min="2024-01-01" max="2030-12-31"></label>
+              <label>勤務タイプ<select id="shiftType"></select></label>
+              <label>開始時間<select id="shiftStart"></select></label>
+              <label>終了時間<select id="shiftEnd"></select></label>
+              <label>休憩時間<select id="shiftBreak"></select></label>
+              <div class="field-note"><span>勤務時間</span><strong id="shiftDurationPreview">8時間</strong></div>
               <label class="wide">メモ<textarea id="shiftMemo" rows="4" placeholder="申し送り、担当フロア、人員メモなど"></textarea></label>
             </div>
+            <p class="form-hint" id="shiftDateHint">同じ日付に複数の勤務予定を登録できます。</p>
             <button class="primary-button" type="submit">シフトを追加</button>
           </form>
           <div class="card list-card">
@@ -221,19 +273,44 @@
         <div class="salary-layout">
           <form class="card form-card" id="salaryForm">
             <h3>給与を計算</h3>
-            <div class="form-grid">
-              <label>日勤回数<input id="dayCount" type="number" min="0" value="12"></label>
-              <label>夜勤回数<input id="nightCount" type="number" min="0" value="8"></label>
-              <label>日勤単価<input id="dayRate" type="number" min="0" value="18000"></label>
-              <label>夜勤単価<input id="nightRate" type="number" min="0" value="22000"></label>
-              <label>夜勤手当<input id="nightBonus" type="number" min="0" value="9000"></label>
+            <div class="salary-groups">
+              <fieldset>
+                <legend>勤務回数</legend>
+                <div class="form-grid compact">
+                  <label>日勤回数<input id="dayCount" type="number" min="0" max="31" value="14"></label>
+                  <label>夜勤回数<input id="nightCount" type="number" min="0" max="31" value="5"></label>
+                  <label>早番回数<input id="earlyCount" type="number" min="0" max="31" value="2"></label>
+                  <label>遅番回数<input id="lateCount" type="number" min="0" max="31" value="2"></label>
+                  <label>有給回数<input id="paidLeaveCount" type="number" min="0" max="31" value="0"></label>
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend>単価・手当</legend>
+                <div class="form-grid compact">
+                  <label>日勤単価<input id="dayRate" type="number" min="0" max="50000" step="500" value="12000"></label>
+                  <label>夜勤単価<input id="nightRate" type="number" min="0" max="50000" step="500" value="18000"></label>
+                  <label>早番単価<input id="earlyRate" type="number" min="0" max="50000" step="500" value="11000"></label>
+                  <label>遅番単価<input id="lateRate" type="number" min="0" max="50000" step="500" value="13000"></label>
+                  <label>夜勤手当<input id="nightBonus" type="number" min="0" max="30000" step="500" value="8000"></label>
+                  <label>時給<input id="hourlyWage" type="number" min="0" max="5000" step="50" value="0"></label>
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend>加算・控除</legend>
+                <div class="form-grid compact">
+                  <label>交通費<input id="transportation" type="number" min="0" max="50000" step="500" value="10000"></label>
+                  <label>その他手当<input id="otherAllowance" type="number" min="0" max="100000" step="500" value="5000"></label>
+                  <label>控除<input id="deduction" type="number" min="0" max="100000" step="500" value="0"></label>
+                </div>
+              </fieldset>
             </div>
             <button class="primary-button" type="submit">計算する</button>
           </form>
           <article class="card earnings-card">
             <p>月間推定給与</p>
-            <strong id="earningsResult">¥448,000</strong>
+            <strong id="earningsResult">¥361,000</strong>
             <span>入力した勤務回数と単価をもとにしたデモ用の見積もりです。</span>
+            <div class="salary-breakdown" id="salaryBreakdown"></div>
             <div class="line-chart"><i></i></div>
           </article>
         </div>
